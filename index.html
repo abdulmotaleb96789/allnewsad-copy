@@ -1,0 +1,498 @@
+<!doctype html>
+<html lang="bn">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="robots" content="noindex, nofollow">
+  <title>All News BD – এডমিন প্যানেল</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Bengali:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <!-- আইকন (সব জায়গায় একই স্টাইল) -->
+  <svg width="0" height="0" style="position:absolute" aria-hidden="true">
+    <defs>
+      <symbol id="i-home" viewBox="0 0 24 24"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></symbol>
+      <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></symbol>
+      <symbol id="i-tag" viewBox="0 0 24 24"><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></symbol>
+      <symbol id="i-list" viewBox="0 0 24 24"><line x1="8" y1="6" x2="21" y2="6"/><line x1="8" y1="12" x2="21" y2="12"/><line x1="8" y1="18" x2="21" y2="18"/><line x1="3" y1="6" x2="3.01" y2="6"/><line x1="3" y1="12" x2="3.01" y2="12"/><line x1="3" y1="18" x2="3.01" y2="18"/></symbol>
+      <symbol id="i-bell" viewBox="0 0 24 24"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></symbol>
+      <symbol id="i-users" viewBox="0 0 24 24"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></symbol>
+      <symbol id="i-logout" viewBox="0 0 24 24"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></symbol>
+      <symbol id="i-menu" viewBox="0 0 24 24"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></symbol>
+      <symbol id="i-refresh" viewBox="0 0 24 24"><polyline points="23 4 23 10 17 10"/><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"/></symbol>
+      <symbol id="i-inbox" viewBox="0 0 24 24"><polyline points="22 12 16 12 14 15 10 15 8 12 2 12"/><path d="M5.45 5.11L2 12v6a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2v-6l-3.45-6.89A2 2 0 0 0 16.76 4H7.24a2 2 0 0 0-1.79 1.11z"/></symbol>
+    </defs>
+  </svg>
+
+  <div id="toast-region" class="toast-region" aria-live="polite"></div>
+
+  <noscript><p class="boot">এই পেজ চালাতে JavaScript চালু থাকতে হবে।</p></noscript>
+  <div id="boot" class="boot"><span class="spinner" aria-hidden="true"></span><p>লোড হচ্ছে…</p></div>
+
+  <!-- ============ লগইন ============ -->
+  <main id="login-view" class="login" hidden>
+    <form id="login-form" class="login-card" novalidate>
+      <div class="stripe" aria-hidden="true"></div>
+      <h1>All News BD</h1>
+      <p class="muted">এডমিন প্যানেলে লগইন করুন</p>
+      <label>ইমেইল
+        <input id="login-email" type="email" autocomplete="username" inputmode="email" required>
+      </label>
+      <label>পাসওয়ার্ড
+        <input id="login-pass" type="password" autocomplete="current-password" required>
+      </label>
+      <p id="login-error" class="form-error" role="alert" hidden></p>
+      <button id="login-btn" class="btn primary block" type="submit">লগইন</button>
+    </form>
+  </main>
+
+  <!-- ============ এডমিন অ্যাপ ============ -->
+  <div id="app-view" class="shell" hidden>
+    <aside id="sidebar" class="sidebar" aria-label="প্রধান মেনু">
+      <div class="stripe" aria-hidden="true"></div>
+      <div class="brand"><strong>All News BD</strong><span>এডমিন</span></div>
+      <nav class="nav" id="nav">
+        <button type="button" data-tab="dashboard" class="active"><svg class="ic"><use href="#i-home"/></svg><span>ড্যাশবোর্ড</span></button>
+        <button type="button" data-tab="websites"><svg class="ic"><use href="#i-globe"/></svg><span>ওয়েবসাইট</span></button>
+        <button type="button" data-tab="categories"><svg class="ic"><use href="#i-tag"/></svg><span>ক্যাটাগরি</span></button>
+        <button type="button" data-tab="menu"><svg class="ic"><use href="#i-list"/></svg><span>More মেনু</span></button>
+        <button type="button" data-tab="notices"><svg class="ic"><use href="#i-bell"/></svg><span>নোটিশ</span></button>
+        <button type="button" data-tab="users"><svg class="ic"><use href="#i-users"/></svg><span>ইউজার</span></button>
+      </nav>
+      <div class="side-foot">
+        <span id="who-email" class="muted"></span>
+        <button id="logout-btn" class="btn ghost small block" type="button"><svg class="ic"><use href="#i-logout"/></svg> লগআউট</button>
+      </div>
+    </aside>
+    <div id="scrim" class="scrim" hidden></div>
+
+    <div class="content">
+      <header class="topbar">
+        <button id="burger" class="btn ghost small icon-btn" type="button" aria-label="মেনু খুলুন" aria-expanded="false"><svg class="ic"><use href="#i-menu"/></svg></button>
+        <h1 id="page-title">ড্যাশবোর্ড</h1>
+      </header>
+
+      <div class="wrap">
+        <!-- ড্যাশবোর্ড -->
+        <section id="tab-dashboard" aria-labelledby="page-title">
+          <p id="dash-error" class="form-error" role="alert" hidden></p>
+          <div class="stats" aria-label="সারসংক্ষেপ">
+            <button type="button" class="stat" data-go="websites"><span>মোট নিউজ ওয়েবসাইট</span><b id="st-total">০</b></button>
+            <button type="button" class="stat ok" data-go="websites" data-go-status="active"><span>সক্রিয় ওয়েবসাইট</span><b id="st-active">০</b></button>
+            <button type="button" class="stat off" data-go="websites" data-go-status="inactive"><span>নিষ্ক্রিয় ওয়েবসাইট</span><b id="st-inactive">০</b></button>
+            <button type="button" class="stat" data-go="categories"><span>মোট ক্যাটাগরি</span><b id="st-cats">০</b></button>
+            <button type="button" class="stat" data-go="users"><span>Registered Users</span><b id="st-users">০</b></button>
+            <button type="button" class="stat bad" data-go="users" data-go-filter="banned"><span>Banned Users</span><b id="st-banned">০</b></button>
+            <button type="button" class="stat" data-go="notices"><span>মোট Notice</span><b id="st-notices">০</b></button>
+            <button type="button" class="stat" data-go="menu"><span>More Menu Items</span><b id="st-menu">০</b></button>
+          </div>
+          <div class="toolbar actions">
+            <button id="dash-reload" class="btn ghost" type="button"><svg class="ic"><use href="#i-refresh"/></svg> সব তথ্য রিফ্রেশ</button>
+          </div>
+        </section>
+
+        <!-- ওয়েবসাইট -->
+        <section id="tab-websites" hidden>
+          <div class="toolbar">
+            <input id="f-search" type="search" placeholder="নাম বা URL খুঁজুন" aria-label="খুঁজুন">
+            <select id="f-cat" aria-label="ক্যাটাগরি অনুযায়ী ফিল্টার"></select>
+            <select id="f-status" aria-label="অবস্থা অনুযায়ী ফিল্টার">
+              <option value="all">সব অবস্থা</option>
+              <option value="active">সক্রিয়</option>
+              <option value="inactive">বন্ধ</option>
+            </select>
+          </div>
+          <div class="toolbar actions">
+            <button id="btn-add-site" class="btn primary" type="button">+ নতুন সাইট</button>
+            <button id="btn-bulk" class="btn ghost" type="button">একসাথে অনেক যোগ</button>
+            <button id="btn-order" class="btn ghost" type="button" title="একটি ক্যাটাগরি বেছে সাইটগুলো উপর-নিচ সাজান">ক্রম সাজান</button>
+            <button id="btn-export" class="btn ghost" type="button">এক্সপোর্ট</button>
+            <button id="btn-reload" class="btn ghost" type="button"><svg class="ic"><use href="#i-refresh"/></svg> রিফ্রেশ</button>
+          </div>
+          <label class="check selall"><input id="sel-all" type="checkbox"> <span id="sel-all-text">তালিকার সবগুলো নির্বাচন করুন</span></label>
+          <p id="site-count" class="muted count"></p>
+          <ul id="site-list" class="list"></ul>
+          <div class="more"><button id="btn-more" class="btn ghost" type="button" hidden>আরও দেখান</button></div>
+        </section>
+
+        <!-- ক্যাটাগরি -->
+        <section id="tab-categories" hidden>
+          <div class="toolbar actions">
+            <button id="btn-add-cat" class="btn primary" type="button">+ নতুন ক্যাটাগরি</button>
+            <button id="btn-cat-reload" class="btn ghost" type="button"><svg class="ic"><use href="#i-refresh"/></svg> রিফ্রেশ</button>
+          </div>
+          <p class="muted count">ছোট ক্রমের সংখ্যা আগে দেখায়। অ্যাপের চিপগুলো এই ক্রমে সাজানো হয়। ▲ ▼ দিয়েও ক্রম বদলানো যায়।</p>
+          <ul id="cat-list" class="list"></ul>
+        </section>
+
+        <!-- More মেনু -->
+        <section id="tab-menu" hidden>
+          <div class="toolbar actions">
+            <button id="btn-add-menu" class="btn primary" type="button">+ নতুন আইটেম</button>
+            <button id="btn-import-menu" class="btn ghost" type="button">JSON থেকে ইমপোর্ট</button>
+            <button id="btn-menu-reload" class="btn ghost" type="button"><svg class="ic"><use href="#i-refresh"/></svg> রিফ্রেশ</button>
+          </div>
+          <p class="muted count">অ্যাপের "More" স্ক্রিনের তালিকা। বদল অ্যাপে দেখাবে অ্যাপ খুললে বা রিফ্রেশ করলে। গ্রুপ নম্বর একই হলে আইটেমগুলো একই ব্লকে থাকে, ক্রমের ছোট সংখ্যা আগে আসে।</p>
+          <p id="menu-count" class="muted count"></p>
+          <ul id="menu-list" class="list"></ul>
+        </section>
+
+        <!-- নোটিশ -->
+        <section id="tab-notices" hidden>
+          <div class="toolbar actions">
+            <button id="btn-add-notice" class="btn primary" type="button">+ নতুন নোটিশ</button>
+            <button id="btn-notice-reload" class="btn ghost" type="button"><svg class="ic"><use href="#i-refresh"/></svg> রিফ্রেশ</button>
+          </div>
+          <p class="muted count">প্রতিটি নোটিশে বাংলা ও ইংরেজি দুই ভাষার শিরোনাম ও বর্ণনা রাখা যায়; অ্যাপ ইউজারের ভাষা অনুযায়ী দেখাবে। শুধু এক ভাষায় লিখলেও চলবে। বদল অ্যাপে দেখাবে অ্যাপ খুললে বা রিফ্রেশ করলে।</p>
+          <p id="notice-count" class="muted count"></p>
+          <ul id="notice-list" class="list"></ul>
+        </section>
+
+        <!-- ইউজার -->
+        <section id="tab-users" hidden>
+          <div class="toolbar">
+            <input id="us-q" type="search" placeholder="ইমেইল বা User ID খুঁজুন" aria-label="ইউজার খুঁজুন">
+            <select id="us-filter" aria-label="ইউজার ফিল্টার">
+              <option value="all">সব ইউজার</option>
+              <option value="active">সক্রিয়</option>
+              <option value="banned">নিষিদ্ধ</option>
+              <option value="admin">এডমিন</option>
+            </select>
+            <button id="us-reload" class="btn ghost" type="button"><svg class="ic"><use href="#i-refresh"/></svg> রিফ্রেশ</button>
+            <button id="us-sync" class="btn ghost" type="button" title="Firebase Authentication-এর সব ইউজার users তালিকায় আনে (Cloud Function লাগে)">Auth থেকে সিঙ্ক</button>
+          </div>
+          <p id="us-count" class="muted count"></p>
+          <ul id="usr-list" class="list"></ul>
+          <div class="more"><button id="us-more" class="btn ghost" type="button" hidden>আরও দেখান</button></div>
+        </section>
+      </div>
+    </div>
+
+    <!-- বাছাই করা সাইটের অ্যাকশন বার -->
+    <div id="bulkbar" class="bulkbar" hidden>
+      <strong id="bb-count">০টি নির্বাচিত</strong>
+      <div class="bb-actions">
+        <button id="bb-on" class="btn ghost small" type="button">সক্রিয়</button>
+        <button id="bb-off" class="btn ghost small" type="button">বন্ধ</button>
+        <button id="bb-cat" class="btn ghost small" type="button">ক্যাটাগরি</button>
+        <button id="bb-export" class="btn ghost small" type="button">এক্সপোর্ট</button>
+        <button id="bb-del" class="btn danger-ghost small" type="button">মুছুন</button>
+        <button id="bb-clear" class="btn ghost small" type="button" aria-label="নির্বাচন বাতিল">✕</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ ডায়ালগ: ওয়েবসাইট ============ -->
+  <dialog id="dlg-site">
+    <form id="site-form" novalidate>
+      <h2 id="site-title">নতুন ওয়েবসাইট</h2>
+      <label>নাম
+        <span class="copy-wrap">
+          <input id="s-name" type="text" maxlength="120" required>
+          <button id="s-name-copy" class="btn ghost small copy-btn" type="button" aria-label="ওয়েবসাইটের নাম কপি করুন">কপি</button>
+        </span>
+      </label>
+      <label>URL
+        <input id="s-url" type="url" inputmode="url" placeholder="https://www.example.com" required>
+      </label>
+
+      <div class="logo-box">
+        <div class="logo-head">
+          <div class="logo-prev-wrap">
+            <img id="s-logo-prev" class="logo-prev" alt="লোগো প্রিভিউ" referrerpolicy="no-referrer" hidden>
+            <span id="s-logo-ph" class="logo-ph">লোগো</span>
+          </div>
+          <div>
+            <strong>লোগো (URL দিন)</strong>
+            <p class="muted small-note">ঐচ্ছিক। ছবির সরাসরি লিংক (https://…) পেস্ট করলে নিচে প্রিভিউ দেখাবে। ফাঁকা রাখলে অ্যাপ ফেভিকন দেখাবে।</p>
+          </div>
+        </div>
+        <label>লোগোর URL
+          <span class="copy-wrap">
+            <input id="s-logo" type="url" inputmode="url" placeholder="https://…/logo.png">
+            <button id="s-logo-paste" class="btn ghost small copy-btn" type="button" aria-label="কপি করা লোগোর URL পেস্ট করুন">পেস্ট</button>
+            <button id="s-logo-copy" class="btn ghost small copy-btn" type="button" aria-label="লোগোর URL কপি করুন">কপি</button>
+            <button id="s-logo-clear" class="btn danger-ghost small copy-btn" type="button" hidden>সরান</button>
+          </span>
+        </label>
+        <p id="s-logo-status" class="small-note" aria-live="polite"></p>
+      </div>
+
+      <label>ক্যাটাগরি
+        <select id="s-cat"></select>
+      </label>
+      <label class="check"><input id="s-active" type="checkbox" checked> অ্যাপে দেখানো হবে</label>
+      <p id="site-error" class="form-error" role="alert" hidden></p>
+      <div class="dlg-actions">
+        <button class="btn ghost" type="button" data-close>বাতিল</button>
+        <button id="site-save" class="btn primary" type="submit">সংরক্ষণ করুন</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ ডায়ালগ: ক্যাটাগরি ============ -->
+  <dialog id="dlg-cat">
+    <form id="cat-form" novalidate>
+      <h2 id="cat-title">নতুন ক্যাটাগরি</h2>
+      <label>নাম (বাংলা)
+        <input id="c-name" type="text" maxlength="60" required>
+      </label>
+      <label>নাম (ইংরেজি) <small class="muted">(অ্যাপের ভাষা ইংরেজি হলে এটা দেখাবে)</small>
+        <input id="c-name-en" type="text" maxlength="60" autocomplete="off" spellcheck="false" placeholder="যেমন: Sports" required>
+      </label>
+      <label>ক্রম (ছোট সংখ্যা আগে)
+        <input id="c-order" type="number" inputmode="numeric" step="1" required>
+      </label>
+      <p id="cat-error" class="form-error" role="alert" hidden></p>
+      <div class="dlg-actions">
+        <button class="btn ghost" type="button" data-close>বাতিল</button>
+        <button id="cat-save" class="btn primary" type="submit">সংরক্ষণ করুন</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ ডায়ালগ: ক্যাটাগরি মোছা ============ -->
+  <dialog id="dlg-catdel">
+    <form id="catdel-form" novalidate>
+      <h2>ক্যাটাগরি মুছবেন?</h2>
+      <p id="cd-msg"></p>
+      <label id="cd-move-wrap">এই ক্যাটাগরির সাইটগুলো কোথায় যাবে?
+        <select id="cd-move"></select>
+      </label>
+      <p id="cd-error" class="form-error" role="alert" hidden></p>
+      <div class="dlg-actions">
+        <button class="btn ghost" type="button" data-close>বাতিল</button>
+        <button id="cd-ok" class="btn danger" type="submit">মুছুন</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ ডায়ালগ: More মেনু আইটেম ============ -->
+  <dialog id="dlg-menu">
+    <form id="menu-form" novalidate>
+      <h2 id="menu-title">নতুন মেনু আইটেম</h2>
+      <label>কী (item_key) <small class="muted">(ইংরেজি ছোট হাতের অক্ষর, সংখ্যা, _ বা -। পরে বদলানো যায় না)</small>
+        <input id="m-key" type="text" maxlength="40" autocomplete="off" spellcheck="false" placeholder="যেমন: youtube" required>
+      </label>
+      <label>শিরোনাম (বাংলা)
+        <input id="m-title-bn" type="text" maxlength="120" required>
+      </label>
+      <label>শিরোনাম (ইংরেজি)
+        <input id="m-title-en" type="text" maxlength="120" required>
+      </label>
+      <label>ছোট বর্ণনা (বাংলা)
+        <input id="m-desc-bn" type="text" maxlength="200">
+      </label>
+      <label>ছোট বর্ণনা (ইংরেজি)
+        <input id="m-desc-en" type="text" maxlength="200">
+      </label>
+      <label>আইকন
+        <select id="m-icon"></select>
+      </label>
+      <label>ধরন (Menu Type)
+        <select id="m-action"></select>
+      </label>
+      <label><span id="m-value-label">মান</span>
+        <textarea id="m-value" rows="4" spellcheck="false"></textarea>
+      </label>
+      <p id="m-value-hint" class="muted small-note"></p>
+      <label>গ্রুপ
+        <select id="m-group"></select>
+      </label>
+      <label>গ্রুপের ভেতরে ক্রম (ছোট সংখ্যা আগে)
+        <input id="m-order" type="number" inputmode="numeric" step="1" required>
+      </label>
+      <label class="check"><input id="m-active" type="checkbox" checked> অ্যাপে দেখানো হবে</label>
+      <p id="menu-error" class="form-error" role="alert" hidden></p>
+      <div class="dlg-actions wrap-actions">
+        <button class="btn ghost" type="button" data-close>বাতিল</button>
+        <button id="menu-preview" class="btn ghost" type="button">প্রিভিউ</button>
+        <button id="menu-save" class="btn primary" type="submit">সংরক্ষণ করুন</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ ডায়ালগ: মেনু আইটেম JSON ইমপোর্ট ============ -->
+  <dialog id="dlg-menuimp" class="wide">
+    <form id="menuimp-form" novalidate>
+      <h2>মেনু আইটেম ইমপোর্ট (JSON)</h2>
+      <p class="muted">আইটেমের JSON তালিকা পেস্ট করুন। যে কী (item_key) আগে থেকেই আছে সেগুলো বাদ যাবে, কিছু বদলাবে না।</p>
+      <textarea id="mi-text" rows="9" spellcheck="false" placeholder='[{"item_key":"about","title_bn":"…","title_en":"…","type":"dialog","value":"…","group":3,"sort_order":1}]'></textarea>
+      <div id="mi-summary" class="bulk-summary" aria-live="polite"></div>
+      <p id="mi-error" class="form-error" role="alert" hidden></p>
+      <div class="dlg-actions">
+        <button class="btn ghost" type="button" data-close>বাতিল</button>
+        <button id="mi-go" class="btn primary" type="submit" disabled>ইমপোর্ট করুন</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ ডায়ালগ: একসাথে অনেক যোগ ============ -->
+  <dialog id="dlg-bulk" class="wide">
+    <form id="bulk-form" novalidate>
+      <h2>একসাথে অনেক সাইট যোগ করুন</h2>
+      <div id="b-input-pane">
+        <p class="muted">প্রতি লাইনে একটি সাইট। ফরম্যাট:<br>
+          <code>নাম | URL | ক্যাটাগরি | লোগোর URL</code><br>
+          ক্যাটাগরি ও লোগো ঐচ্ছিক। পুরোনো তিন কলামের (<code>নাম | URL | ক্যাটাগরি</code>) ফরম্যাটও চলবে। ক্যাটাগরি বাংলা বা ইংরেজি নাম দিয়ে মেলানো হয়। এক্সেল বা শিট থেকে কপি করলেও চলবে।</p>
+        <textarea id="b-text" rows="7" spellcheck="false" placeholder="প্রথম আলো | https://www.prothomalo.com | বাংলা | https://example.com/logo.png&#10;The Daily Star | https://www.thedailystar.net | English"></textarea>
+        <div id="b-summary" class="bulk-summary" aria-live="polite"></div>
+        <div id="b-preview" class="b-preview"></div>
+      </div>
+      <div id="b-report-pane" hidden>
+        <h3>ইমপোর্ট রিপোর্ট</h3>
+        <div id="b-report" class="bulk-summary"></div>
+      </div>
+      <div class="dlg-actions wrap-actions">
+        <button id="b-copy-failed" class="btn ghost" type="button" hidden>ব্যর্থ লাইন কপি</button>
+        <button class="btn ghost" type="button" data-close id="b-close">বাতিল</button>
+        <button id="b-go" class="btn primary" type="submit" disabled>যোগ করুন</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ ডায়ালগ: সাইটের ক্রম সাজান ============ -->
+  <dialog id="dlg-order">
+    <form id="order-form" novalidate>
+      <h2 id="order-title">ক্রম সাজান</h2>
+      <p class="muted small-note">উপরের সাইট অ্যাপে আগে দেখাবে। ▲ ▼ দিয়ে এক ধাপ, ⤒ ⤓ দিয়ে একেবারে উপরে বা নিচে নিন। শেষে "ক্রম সংরক্ষণ" চাপুন।</p>
+      <ul id="order-list" class="list order-list"></ul>
+      <p id="order-error" class="form-error" role="alert" hidden></p>
+      <div class="dlg-actions">
+        <button class="btn ghost" type="button" data-close>বাতিল</button>
+        <button id="order-save" class="btn primary" type="submit">ক্রম সংরক্ষণ</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ ডায়ালগ: নোটিশ ============ -->
+  <dialog id="dlg-notice">
+    <form id="notice-form" novalidate>
+      <h2 id="notice-title">নতুন নোটিশ</h2>
+      <label>শিরোনাম (বাংলা)
+        <input id="n-title-bn" type="text" maxlength="120">
+      </label>
+      <label>শিরোনাম (English)
+        <input id="n-title-en" type="text" maxlength="120">
+      </label>
+      <label>বর্ণনা (বাংলা)
+        <textarea id="n-desc-bn" rows="5" maxlength="1500"></textarea>
+      </label>
+      <label>বর্ণনা (English)
+        <textarea id="n-desc-en" rows="5" maxlength="1500"></textarea>
+      </label>
+      <p class="muted small-note">অন্তত একটি ভাষায় শিরোনাম ও বর্ণনা দিন। ভুল ঘরে অন্য ভাষা লিখলে (যেমন বাংলা ঘরে ইংরেজি) সংরক্ষণের সময় নিজে থেকে সঠিক ঘরে বসে যাবে।</p>
+      <label>বিস্তারিত লিংক <small class="muted">(ঐচ্ছিক। দিলে অ্যাপে "বিস্তারিত" বাটন আসবে)</small>
+        <input id="n-link" type="url" inputmode="url" placeholder="https://…">
+      </label>
+      <label class="check"><input id="n-active" type="checkbox" checked> অ্যাপে দেখানো হবে (প্রকাশিত)</label>
+      <p id="notice-error" class="form-error" role="alert" hidden></p>
+      <div class="dlg-actions wrap-actions">
+        <button class="btn ghost" type="button" data-close>বাতিল</button>
+        <button id="notice-preview" class="btn ghost" type="button">প্রিভিউ</button>
+        <button id="notice-save" class="btn primary" type="submit">সংরক্ষণ করুন</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ ডায়ালগ: প্রিভিউ (মেনু আইটেম / নোটিশ) ============ -->
+  <dialog id="dlg-preview">
+    <form method="dialog">
+      <h2 id="pv-title">প্রিভিউ</h2>
+      <div class="pv-tabs" role="tablist" aria-label="প্রিভিউর ভাষা">
+        <button type="button" class="btn small ghost" data-pv-lang="bn" aria-pressed="true">বাংলা</button>
+        <button type="button" class="btn small ghost" data-pv-lang="en" aria-pressed="false">English</button>
+      </div>
+      <div id="pv-body" class="pv-body"></div>
+      <div class="dlg-actions"><button class="btn primary" value="close">বন্ধ করুন</button></div>
+    </form>
+  </dialog>
+
+  <!-- ============ ডায়ালগ: এক্সপোর্ট ============ -->
+  <dialog id="dlg-export">
+    <form id="export-form">
+      <h2>এক্সপোর্ট</h2>
+      <label>কোন সাইটগুলো
+        <select id="ex-scope"></select>
+      </label>
+      <label>ফরম্যাট
+        <select id="ex-format">
+          <option value="csv">CSV (এক্সেল/শিটে খোলে, UTF-8)</option>
+          <option value="json">JSON (ব্যাকআপ)</option>
+          <option value="txt">টেক্সট: নাম | URL | ক্যাটাগরি</option>
+          <option value="txt-logo">টেক্সট: নাম | URL | ক্যাটাগরি | লোগোর URL</option>
+        </select>
+      </label>
+      <div class="dlg-actions">
+        <button class="btn ghost" type="button" data-close>বাতিল</button>
+        <button class="btn primary" type="submit">ডাউনলোড</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ ডায়ালগ: নির্বাচিতদের ক্যাটাগরি ============ -->
+  <dialog id="dlg-bulkcat">
+    <form id="bulkcat-form">
+      <h2>ক্যাটাগরি বদলান</h2>
+      <p id="bc-info" class="muted"></p>
+      <label>নতুন ক্যাটাগরি
+        <select id="bc-cat"></select>
+      </label>
+      <div class="dlg-actions">
+        <button class="btn ghost" type="button" data-close>বাতিল</button>
+        <button id="bc-go" class="btn primary" type="submit">বদলান</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ ডায়ালগ: ইউজার ব্যান ============ -->
+  <dialog id="dlg-ban">
+    <form method="dialog">
+      <h2>ইউজার নিষিদ্ধ করবেন?</h2>
+      <p id="ban-who" class="muted"></p>
+      <p>নিষিদ্ধ ইউজার আর ফেভারিট, বুকমার্ক, সাজেশন বা রিপোর্ট সেভ করতে পারবে না। এটি পরে তুলে নেওয়া যায়।</p>
+      <label>কারণ <small class="muted">(ঐচ্ছিক, শুধু আপনি দেখবেন)</small>
+        <input id="ban-reason" type="text" maxlength="200">
+      </label>
+      <label class="check"><input id="ban-disable" type="checkbox"> Firebase লগইনও বন্ধ করুন <small class="muted">(Cloud Function লাগে)</small></label>
+      <div class="dlg-actions">
+        <button class="btn ghost" value="cancel">বাতিল</button>
+        <button class="btn danger" value="ok">নিষিদ্ধ করুন</button>
+      </div>
+    </form>
+  </dialog>
+
+  <!-- ============ ডায়ালগ: ইউজারের বিবরণ ============ -->
+  <dialog id="dlg-user">
+    <form method="dialog">
+      <h2>ইউজারের বিবরণ</h2>
+      <dl id="ud-body" class="detail"></dl>
+      <div class="dlg-actions"><button class="btn primary" value="close">বন্ধ করুন</button></div>
+    </form>
+  </dialog>
+
+  <!-- ============ ডায়ালগ: নিশ্চিতকরণ ============ -->
+  <dialog id="dlg-confirm">
+    <form method="dialog">
+      <h2 id="cf-title">নিশ্চিত করুন</h2>
+      <p id="cf-msg"></p>
+      <div class="dlg-actions">
+        <button class="btn ghost" value="cancel">বাতিল</button>
+        <button id="cf-ok" class="btn danger" value="ok">মুছুন</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script>
+    // Firebase SDK লোড না হলে (ইন্টারনেট/ব্লক) চিরকাল "লোড হচ্ছে" দেখানো এড়াতে
+    setTimeout(function () {
+      var b = document.getElementById('boot');
+      if (b && !b.hidden) b.innerHTML = '<p>লোড করা যায়নি। ইন্টারনেট সংযোগ দেখে পেজ রিফ্রেশ করুন। (Firebase SDK লোড হয়নি)</p>';
+    }, 15000);
+  </script>
+  <script type="module" src="app.js"></script>
+</body>
+</html>
